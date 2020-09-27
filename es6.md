@@ -219,23 +219,137 @@ p.then(function (s) {
 这回直接返回一个 resolved 的状态的 promise 对象。
 
 ### Promise.reject()
-该方法会返回一个新的promise实例，该实例的状态为rejected。  
+
+该方法会返回一个新的 promise 实例，该实例的状态为 rejected。  
 `const p = Promise.reject('error');`  
-等同于  
+等同于
+
 ```
-const p = new Promise((resolve,reject) => reject('error'))  
+const p = new Promise((resolve,reject) => reject('error'))
 p.then(null, s => console.log(s));
-//error  
-```  
-代码生成一个promise对象的实例p，状态为rejected，回调函数立即执行。  
-Promise.reject()方法的参数，会原封不动地作为reject的理由，变为后续方法的参数。  
-### Promise.try()  
-若不想知道或者不区分函数是同步还是异步，但是想用promise去处理，这样就可以不管函数是否包含异步操作，都使用then方法指定下一步流程，用catch方法处理函数抛出的错误。  
+//error
+```
+
+代码生成一个 promise 对象的实例 p，状态为 rejected，回调函数立即执行。  
+Promise.reject()方法的参数，会原封不动地作为 reject 的理由，变为后续方法的参数。
+
+### Promise.try()
+
+若不想知道或者不区分函数是同步还是异步，但是想用 promise 去处理，这样就可以不管函数是否包含异步操作，都使用 then 方法指定下一步流程，用 catch 方法处理函数抛出的错误。
+
 ```
 const f = () => console.log('now');
 Promise.try(f);
 console.log('next');
 //now
 //next
+```
+
+使用 promise.try 包装一下，可以更好的管理异常。
+
+## async 函数
+
+### 含义
+
+async 函数就是 Generator 的语法糖
+
+```
+const asyncReadFile = async function () {
+  const f1 = await readFile('/etc/fstab');
+  const f2 = await readFile('/etc/shells');
+  console.log(f1.toString());
+  console.log(f2.toString());
+};
+```
+
+1. 内置执行器  
+   Generator 函数执行必须依靠执行器，所有有了 co 模块，而 async 函数自带执行器，async 函数的执行，与普通函数一样，只要一行。
+2. 更好语义
+3. 更广的适用性  
+   async 函数的 await 命令后面，可以是 promise 对象和原始类型的值（数值，字符串，布尔值，此时会自动转成立即 resolved 的 promise 对象）。
+4. 返回值是 promise  
+   async 函数的返回值是 promise 对象，可以使用 then 方法指定下一步的操作。
+
+### 用法
+
+async 函数返回一个 promise 对象，可以使用 then 方法添加回调函数，当函数执行的时候，一旦遇到 await 就会先返回，等到异步操作完成，继续执行函数体内的语句。
+
+### 语法
+
+async 函数内部 return 语句返回的值，会成为 then 方法回调函数的参数。
+
+```
+async function f() {
+  return 'hello world';
+}
+
+f().then(v => console.log(v))
+// "hello world"
+```
+
+async 函数内部抛出错误，会导致返回的 promise 对象变为 rejected 状态，抛出错误对象会被 catch 方法回调函数接收到。
+
+```
+async function f() {
+  throw new Error('出错了');
+}
+
+f().then(
+  v => console.log('resolve', v),
+  e => console.log('reject', e)
+)
+//reject Error: 出错了
+```
+
+async 函数返回的 promise 对象，必须等到内部所有 await 命令后面的 promise 对象执行完，才会发生状态改变，除非遇到 return 语句或者返回错误。
+
+await 命令后面是一个 promise 对象，返回该对象的结果，若不是 promise 对象，就直接返回对应值。  
+另一种情况是，await 命令后面是一个 thenable 对象（即定义了 then 方法的对象），那么 await 会将其等同于 promise 对象。
+
+### async 函数的实现原理
+
+async 函数的实现原理，就是将 Generator 函数和自动执行器，包装在一个函数里。
+
+```
+async function fn(args) {
+  // ...
+}
+
+// 等同于
+
+function fn(args) {
+  return spawn(function* () {
+    // ...
+  });
+}
+```
+
+### 比较
+
+简洁符合语义。
+
+### 按顺序完成异步操作
+
+一组异步操作，需要按照顺序完成，远程读取一组 url，然后按照读取顺序输出结果。
+
+```
+async function logInOrder(urls) {
+  // 并发读取远程URL
+  const textPromises = urls.map(async url => {
+    const response = await fetch(url);
+    return response.text();
+  });
+
+  // 按次序输出
+  for (const textPromise of textPromises) {
+    console.log(await textPromise);
+  }
+}
 ```  
-使用promise.try包装一下，可以更好的管理异常。  
+虽然map方法的参数是async函数，但它是并发执行的，因为只有async函数内部是继发执行，外部不受影响。后面的for..of循环内部使用了await，因此实现了按顺序输出。  
+
+### 顶层 await
+await命令只能出现在async函数内部。  
+提案允许在模块的顶层独立使用await命令。目的是借用await解决模块异步加载的问题。  
+顶层await命令交出代码的执行权给其他模块加载，等异步操作完成后，再拿回控制权。  
+
