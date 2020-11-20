@@ -30,7 +30,7 @@
 向集合中插入一个新文档。  
 `db.collection.insertOne()`  
 向集合中插入一个或者多个文档。  
-`db.collection.insertMany()`
+`db.collection.insertMany()`  
 
 ### 更新文档
 

@@ -120,11 +120,11 @@ Array.of 可以用来替代 Array 和 new Array，并且不存在由于参数不
 在当前数组的内部，将指定位置的成员复制到其他位置（会覆盖原有成员），然后返回当前数组。  
 三个参数：
 
-- target（必须）：从该位置开始替换数据，负值表示倒数。
-- start（可选）： 从该位置开始读取数据，负值从尾部开始。
-- end（可选）： 到该位置前停止读取数据，默认等于数组的长度，负值表示从结尾计算。  
-  `[1, 2, 3, 4, 5].copyWithin(0, 3)`  
-  `// [4, 5, 3, 4, 5]`
+-   target（必须）：从该位置开始替换数据，负值表示倒数。
+-   start（可选）： 从该位置开始读取数据，负值从尾部开始。
+-   end（可选）： 到该位置前停止读取数据，默认等于数组的长度，负值表示从结尾计算。  
+    `[1, 2, 3, 4, 5].copyWithin(0, 3)`  
+    `// [4, 5, 3, 4, 5]`
 
 ### 数组实例的 find 和 findIndex
 
@@ -208,8 +208,8 @@ includes 使用的是不一样的判断算法，就没有这个问题。
 **注意：**  
 Map 与 Set 数据结构有一个 has 方法，需要注意与 includes 区分。
 
-- Map 结构的 has 方法，是用来查找键名的
-- Set 结构的 has 方法是用来查找值的。
+-   Map 结构的 has 方法，是用来查找键名的
+-   Set 结构的 has 方法是用来查找值的。
 
 ### flat，faltMap
 
@@ -254,15 +254,19 @@ arr.flatMap(function callback(currentValue[, index[, array]]) {
 
 数组空位指数组的某一个位置没有值。  
 **注意：**  
-空位不是undefined，一个位置的值等于undefined，依然是有值的。空位是没有任何值。  
-- forEach(), filter(),reduce(),every(),some()都会跳过空位。  
-- map()会跳过空位，但会保留这个值。  
-- join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串。  
+空位不是 undefined，一个位置的值等于 undefined，依然是有值的。空位是没有任何值。
+
+-   forEach(), filter(),reduce(),every(),some()都会跳过空位。
+-   map()会跳过空位，但会保留这个值。
+-   join()和 toString()会将空位视为 undefined，而 undefined 和 null 会被处理成空字符串。
+
 ```
 0 in [undefined, undefined, undefined] // true
 0 in [, , ,] // false
-```  
-第一个数组的0号位置是有值的，第二个数组的0号位置没有值。  
+```
+
+第一个数组的 0 号位置是有值的，第二个数组的 0 号位置没有值。
+
 ```
 // forEach方法
 [,'a'].forEach((x,i) => console.log(i)); // 1
@@ -287,13 +291,15 @@ arr.flatMap(function callback(currentValue[, index[, array]]) {
 
 // toString方法
 [,'a',undefined,null].toString() // ",a,,"
-```  
-ES6明确将空位转为undefined。  
-Array.from()方法会将数组的空位转为undefined。  
-扩展运算符也会将空位转为undefined。  
+```
+
+ES6 明确将空位转为 undefined。  
+Array.from()方法会将数组的空位转为 undefined。  
+扩展运算符也会将空位转为 undefined。  
 copyWithin()会连空位一起拷贝。  
 fill()会将空位是为正常的数组位置。  
-for..of循环也会遍历空位。  
+for..of 循环也会遍历空位。
+
 ```
 let arr = [, ,];
 for (let i of arr) {
@@ -301,9 +307,11 @@ for (let i of arr) {
 }
 // 1
 // 1
-```  
-数组arr有两个空位，并没有被忽略。  
-entries，keys，values，find，findIndex会将空位处理为undefined。  
+```
+
+数组 arr 有两个空位，并没有被忽略。  
+entries，keys，values，find，findIndex 会将空位处理为 undefined。
+
 ### Array.prototype.sort 的排序稳定性
 
 ## 对象的扩展
@@ -330,13 +338,13 @@ ES6 允许字面量定义对象时，可以将表达式放在方括号内。
 描述对象的 enumerable 属性，称为可枚举性，若该属性为 false，就表示某些操作会忽略当前属性。  
 有四个操作会忽略 enumerable 为 false 属性。
 
-- for in 循环：只遍历对象自身和继承的可枚举属性。
-- Object.keys： 返回对象自身的所有可枚举的属性的键名。
-- JSON.stringify: 只串行化自身对象的可枚举属性。
-- Object.assign: 忽略 enumerable 为 false 的属性，只拷贝对象自身的可枚举属性。  
-  最后一个方法是 ES6 新增，只有 for in 会返回继承的属性，其他方法只处理对象自身的属性。  
-  最初引入可枚举性的目地是让某些属性可以规避掉 for in 操作，不然所有内部的属性和方法都会被遍历到。  
-  ES6 共有五种遍历方法：
+-   for in 循环：只遍历对象自身和继承的可枚举属性。
+-   Object.keys： 返回对象自身的所有可枚举的属性的键名。
+-   JSON.stringify: 只串行化自身对象的可枚举属性。
+-   Object.assign: 忽略 enumerable 为 false 的属性，只拷贝对象自身的可枚举属性。  
+    最后一个方法是 ES6 新增，只有 for in 会返回继承的属性，其他方法只处理对象自身的属性。  
+    最初引入可枚举性的目地是让某些属性可以规避掉 for in 操作，不然所有内部的属性和方法都会被遍历到。  
+    ES6 共有五种遍历方法：
 
 1. for in  
    循环遍历对象自身的和继承的可枚举属性。
@@ -480,9 +488,9 @@ const showSplashScreen = response.settings.showSplashScreen ?? true;
 promise 简单来说是一个容器，保存着未来才会结束的事情（通常为异步操作）。语法上来说是一个对象，可以获取到异步操作的消息。  
 promise 对象有以下的特点：
 
-- 对象状态不受外界的影响，promise 对象代表着一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）、reject（已失败）。只有异步操作的结果才可以决定当前的状态，其他操作无法改变。
-- 状态改变，就不会再变，任何时候都可以得到这个结果，promise 对象状态改变只有两种可能，从 pending 变为 fulfilled 和从 pending 变为 rejected。只要这两种情况发生，状态凝固。此时称为 resolve。  
-  Promise 缺点：
+-   对象状态不受外界的影响，promise 对象代表着一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）、reject（已失败）。只有异步操作的结果才可以决定当前的状态，其他操作无法改变。
+-   状态改变，就不会再变，任何时候都可以得到这个结果，promise 对象状态改变只有两种可能，从 pending 变为 fulfilled 和从 pending 变为 rejected。只要这两种情况发生，状态凝固。此时称为 resolve。  
+    Promise 缺点：
 
 1. 无法取消，一旦新建就会立即执行，无法中途取消。
 2. 若没有设置回调函数，promise 内部抛出的错误，不会反映到外部。
@@ -491,7 +499,7 @@ promise 对象有以下的特点：
 ### 用法
 
 Promise 对象是一个构造函数，用来生成 Promise 实例。  
-Promis 构造函数接受一个函数作为参数，该函数的两个参数 resolve 和 reject。resolve 是将 Promise 对象的状态从未完成到成功，在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；reject 函数的作用是将 Promise 对象的状态从未完成变为失败，在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。  
+Promise 构造函数接受一个函数作为参数，该函数的两个参数 resolve 和 reject。resolve 是将 Promise 对象的状态从未完成到成功，在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；reject 函数的作用是将 Promise 对象的状态从未完成变为失败，在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。  
 promise 实例生成后，可以用 then 方法分别制定 resolved 状态和 rejected 状态的回调函数。  
 then 方法接受两个回调函数作为参数，第一个参数为成功时的回调函数，第二个参数是失败时回调，第二个参数可选，两个函数都接受 promise 对象传出的值作为参数。
 
@@ -829,3 +837,261 @@ async function logInOrder(urls) {
 await 命令只能出现在 async 函数内部。  
 提案允许在模块的顶层独立使用 await 命令。目的是借用 await 解决模块异步加载的问题。  
 顶层 await 命令交出代码的执行权给其他模块加载，等异步操作完成后，再拿回控制权。
+
+## proxy
+
+### 概述
+
+在目标对象之前架设一层拦截，外界对该对象的访问必须通过这层拦截，可以对外界的访问进行过滤和改写。
+
+```
+var obj = new Proxy({}, {
+  get: function(){},
+  set: function(){}
+});
+```
+
+对空对象架设一层拦截，重定义了属性的读取和设置行为。  
+ES6 提供原生的 Proxy 构造函数。  
+`var proxy = new Proxy(target,handler);`  
+new Proxy()表示生成一个 Proxy 实例，target 参数表示所要拦截的目标对象，handler 参数也是一个对象，用来定制拦截行为。
+
+```
+var proxy = new Proxy(
+    {},
+    {
+        get: function (target, handler) {
+            return 30;
+        },
+    }
+);
+console.log(proxy.name);
+```
+
+作为构造函数，Proxy 接受两个参数，第一个参数所要代理的目标。如果没有 Porxy 的介入，操作原来要访问的就是这个对象；第二个参数是一个配置对象，对于每个被代理的操作，需提供一个对应的处理函数，函数将处理拦截对应操作。  
+可以将 Proxy 对象设置到 object.proxy 属性，从而可以在 object 对象上调用。  
+`var object = {proxy: new Proxy(target, handler )};`  
+Proxy 实例也可以作为其他对象的原型对象。
+
+```
+var proxy = new Proxy({}, {
+  get: function(target, propKey) {
+    return 35;
+  }
+});
+let obj = Object.create(proxy);
+obj.time // 35
+```
+
+proxy 对象是 obj 对象的原型，obj 本身并没有 time 属性，所以根据原型链，会在 proxy 对象上读取该属性，导致被拦截。  
+同个拦截器函数，可以设置拦截多个操作。
+
+```
+var handler = {
+  get: function(target, name){
+    if(name === "prototype"){
+      return Object.prototype;
+    }
+    return "hello," + name;
+  }
+  apply: function(target,thisBinding,args){
+    return args[0];
+  }
+  construct: function(target,args){
+    return {value:args[1]};
+  }
+}
+var fproxy = new Proxy(function(x,y){
+  return x + y;
+}, handler);
+fproxy(1,2)  //  1
+new fproxy(1,2)  //  {value:2}
+fproxy.prototype === Object.prototype //  true
+fproxy.foo === "hello foo"  //  true
+```
+
+### proxy 拦截操作
+
+-   get(target,ptopKey, recevier):拦截对象属性的读取，比如 proxy.foo 和 proxy['foo']。
+-   set(target,propKey,value,receiver):拦截对象属性的设置。b 比如 proxy.foo = 'v' 或 proxy['foo'] = 'v'返回布尔值。
+-   has(target,propKey):拦截 propKey in proxy 的操作，返回布尔值。
+-   deleteProperty(target,propKey):拦截 delete proxy[propKey]的操作，返回一个布尔值。
+-   ownKeys(target):拦截 Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for..in 循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而 Object.keys()的返回结果仅包括目标对象自身的可遍历属性。
+-   getOwnPropertyDescription(target,propKey):拦截 Object.getOwnPropertyDescriptor(target,propKey),返回属性的描述对象。
+-   defineProprty(target,propKey,propDesc):拦截 Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)，返回一个布尔值。
+-   preventExtensions(target)：拦截 Object.preventExtensions(proxy)，返回一个布尔值。
+-   getPrototypeOf(target)：拦截 Object.getPrototypeOf(target):，返回一个对象。
+-   isExtensible(target):拦截 Object.isExtensible(proxy)，返回一个布尔值。
+-   setPrototypeOf(target,proto):拦截 Object.setPrototypeOf(proxy,proto),返回一个布尔值如果目标对象是函数，那么还有两种额外操作可以拦截。
+-   apply(target,object,args):拦截 Proxy 实例作为函数调用的操作，比如 proxy(...args)、proxy.call(object,...args)、proxy.apply(...)。
+-   construct(target,args):拦截 Proxy 实例作为构造函数调用的操作，比如 new proxy(...args)。
+
+### proxy 的实例方法
+
+1. get()  
+   get 方法用于拦截某个属性的读取操作，接受三个参数，目标对象，属性名和 proxy 实例本身(是操作行为所针对的对象)，最后一个参数可选。  
+   拦截读取操作的例子。
+
+```
+var person = {
+  name: "aaa"
+};
+var proxy = new Proxy(person, {
+  get: function(target, propKey){
+    if(propKey in target){
+      return target[propKey];
+    }else{
+      throw new ReferenceError("not exist");
+    }
+  }
+});
+proxy.name  //aaa
+proxy.age //抛出错误
+```
+
+访问目标对象上不存在的属性，会抛出一个错误，若没有拦截函数，访问不存在的属性，只会返回 undefined。  
+get 方法可以继承。
+
+```
+let proto = new Proxy({}, {
+  get(target, propertyKey, receiver){
+    console.log('GET' + propertyKey)；
+    return target[propertyKey];
+  }
+});
+let obj = Object.create(proto);
+obj.foo // "GET foo"
+```
+
+上述代码中，拦截操作定义在 Protytype 对象上，所以如果读取 obj 对象上继承的属性时，拦截会生效。  
+使用 get 拦截，实现数组读取负数的索引。
+
+```
+function createArray(...elements){
+  let handler = {
+    get(target,propKey,receiver){
+      let index = Number(propKey);
+      if(index < 0){
+        propKey = String(target.length + index);
+      }
+      return Reflect.get(target,propKey,receiver);
+    }
+  };
+  let target = [];
+  target.push(...elements);
+  return new Proxy(target,handler);
+}
+let arr = createArray('a','b','c');
+arr[-1]   //c
+```
+
+利用 proxy，可以将读取属性的操作(get)，转变为执行某个函数，从而实现属性的链式操作。
+
+```
+var pip = function(value){
+  var funcStack = [];
+  var oproxy = new Proxy({}, {
+    get:function(pipeObject,fnName){
+      if(fnName === 'get'){
+        return funcStack.reduce(function(val,fn){
+          return fn(val);
+        },value);
+      }
+      funcStack.push(window[fnName]);
+      return oproxy;
+    }
+  });
+  return oproxy;
+}
+var double = n => n * 2;
+var pow    = n => n * n;
+var reverseInt = n => n.toString().split("").reverse().join("") | 0;
+
+pipe(3).double.pow.reverseInt.get; // 63
+```
+
+get 方法第三个参数。它总是指向原始的读操作所在的对象，一般情况下为 Proxy 实例。
+
+```
+const proxy = new Proxy({}, {
+  get: fucntion(target,key,receiver){
+    return receiver;
+  }
+});
+proxy.getReceiver === proxy  // true
+```
+
+上例中，proxy 对象的 getReceiver 属性是由 proxy 对象提供的，所以 receiver 指向 proxy 对象。
+
+```
+const proxy = new Proxy({}, {
+  get:function(target, key, receiver){
+    return receiver;
+  }
+});
+const d = Object.create(proxy);
+d.a === d   //true
+```
+
+上例中，d 对象本身没有 a 属性，所以读取 d.a 时，会去 d 的原型对象 proxy 对象查找，此时 receiver 就指向 d，代表原始的读操作所在的那个对象。  
+若一个属性不可配置且不可读写，则 Proxy 不能修改该属性，否则通过 Proxy 对象访问该属性会报错。  
+2. set()  
+set 方法用来拦截某个属性的赋值操作，可以接受四个参数，依次为目标对象，属性名，属性值，Proxy 实例本身。最后一个参数可选。  
+假定 Person 对象有一个 age 属性，该属性应该是一个不大于 200 的整数，那么可以使用 Proxy 保证 age 的属性符合要求。
+
+```
+let validator = {
+  set: function(obj, prop, value){
+    if(prop === 'age'){
+      if(!Number.isInteger(value)){
+        throw new TypeError('...');
+      }
+      if(value > 200){
+        throw new RangeError('...');
+      }
+    }
+    obj[prop] = value;
+  }
+};
+let person = new Proxy({}, validator);
+person.age = 100;
+person.age // 100
+person.age = 'young' // 报错
+person.age = 300 // 报错
+```
+
+结合 set 与 get 方法可以防止内部属性被改写。
+
+```
+const handler = {
+  get (target, key) {
+    invariant(key, 'get');
+    return target[key];
+  },
+  set (target, key, value) {
+    invariant(key, 'set');
+    target[key] = value;
+    return true;
+  }
+};
+function invariant (key, action) {
+  if (key[0] === '_') {
+    throw new Error(`Invalid attempt to ${action} private "${key}" property`);
+  }
+}
+const target = {};
+const proxy = new Proxy(target, handler);
+```
+
+set 第四个参数例子：
+
+```
+const handler = {
+  setL function(obj, prop, value, receiver){
+    obj[prop] = receiver;
+  }
+};
+const proxy = new Proxy({}, handler);
+proxy.foo = 'bar';
+proxy.foo === proxy;  //true
+```

@@ -33,7 +33,7 @@
 `path.resolve()`获得相对路径的绝对路径计算。  
 `path.normalize()`可以计算包含. .. 斜杠之类的实际路径  
 ### 读取文件  
-`fa.readFile()`方法读取文件，可以传入文件路径，编码，文件数据以及错误进行调用的回调函数。  
+`fs.readFile()`方法读取文件，可以传入文件路径，编码，文件数据以及错误进行调用的回调函数。  
 这个函数会在返回数据之前将文件的全部内容读取到内存中，这意味着会对内存的消耗和程序的执行速度有很大的影响。  
 此时最好是使用流来读取文件。  
 ### 写入文件  
@@ -88,4 +88,23 @@ emitter.removeListener()的别名。
 14. `emitter.setMaxListener()`  
 设置可以添加到EventEmitter对象的监听器的最大数量（默认为10，可以增加或减少）。  
 
-
+const path = require('path')  
+//返回路径最后部分，第二个参数可以过滤文件扩展名  
+`console.log(path.basename('/test/test.js', '.js'));`  
+//返回路径目录部分  
+`console.log(path.dirname('/page/test/api.js'));`  
+//返回路径的扩展名  
+`console.log(path.extname('/text/test.js'));`  
+//如果是绝对路径，则返回 true。  
+`console.log(path.isAbsolute('/test/test.js'));`  
+`console.log(path.isAbsolute('test/test.js'));`  
+//连接路径的两个或多个部分  
+`console.log(path.join('/', '/test', '/test.js'));`  
+//当包含类似 .、.. 或双斜杠等相对的说明符时，则尝试计算实际的路径  
+`console.log(path.normalize('../text/text/text.js'));`  
+//解析对象的路径为组成其的片段  
+`console.log(path.parse('/src/page/text.js'));`  
+// 基于当前工作目录，返回从第一个路径到第二个路径的相对路径  
+`console.log(path.relative('text/text.js', 'src/page/text/text.js'));`  
+//获得相对路径的绝对路径计算,通过指定第二个参数，resolve 会使用第一个参数作为第二个参数的基准  
+`console.log(path.resolve('text.js'));`  
